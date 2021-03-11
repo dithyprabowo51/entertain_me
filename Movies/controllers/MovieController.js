@@ -29,7 +29,7 @@ class MovieController {
       }
       const movie = new Movie(title, overview, poster_path, popularity, tags)
       const newMovie = await movie.save()
-      res.status(201).json(newMovie)
+      res.status(201).json('Added new movie successfully')
     } catch (err) {
       next(err)
     }

@@ -7,7 +7,7 @@ const connect = async () => {
     const uri = 'mongodb://localhost:27017'
     const client = new MongoClient(uri, { useUnifiedTopology: true })
     await client.connect()
-    const db = client.db('entertainme')
+    const db = client.db('movies_service')
     database = db
     return database
   } catch (err) {
