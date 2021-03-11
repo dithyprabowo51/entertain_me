@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Routing
-app.use(routes)
+app.use('/movies', routes)
 
 // Error handling
 app.use(errorHandling)
