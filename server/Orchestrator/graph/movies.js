@@ -46,7 +46,7 @@ const resolverMovie = {
         })
         return data
       } catch (err) {
-        console.log(err)
+        console.log('err')
       }
     }
   },

@@ -15,7 +15,7 @@ class TvController {
     try {
       const { id } = req.params
       const tv = await Tv.findById(id)
-      res.status(200).json(tv)
+      res.status(200).json(tv[0])
     } catch (err) {
       next(err)
     }
