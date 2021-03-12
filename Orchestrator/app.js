@@ -1,14 +1,39 @@
-const express = require('express')
-const app = express()
-const orchestratorRoutes = require('./routes/orchestratorRoutes.js')
-const errorHandling = require('./helpers/errorHandling.js')
-const PORT = process.env.PORT || 3000
+const { ApolloServer, gql } = require('apollo-server')
+const axios = require('axios')
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+const typeDefs = gql`
+  type movie {
+    _id: ID
+    title: String
+    overview: String
+    poster_path: String
+    popularity: Int
+    tags: [String]
+  }
 
-app.use('/entertainme', orchestratorRoutes)
+  type Query {
+    movies: [movie]
+  }
+`
 
-app.use(errorHandling)
+const resolvers = {
+  Query: {
+    movies: async () => {
+      try {
+        const { data } = await axios({
+          url: 'http://localhost:3001/movies',
+          method: 'GET'
+        })
+        return data
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+}
 
-app.listen(PORT, () => console.log('Server is running on port', PORT))
+const server = new ApolloServer({ typeDefs, resolvers })
+
+server.listen().then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`)
+})
