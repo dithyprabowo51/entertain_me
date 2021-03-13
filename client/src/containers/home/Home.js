@@ -30,7 +30,6 @@ const getMoviesAndTvSeries = gql`
 
 const Home = () => {
   const { data, loading } = useQuery(getMoviesAndTvSeries)
-  console.log(data)
   return (
     <div className="home">
       {

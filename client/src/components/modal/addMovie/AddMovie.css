@@ -1,0 +1,22 @@
+.add-movie {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.719);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-tags {
+  color: rgba(255, 0, 0, 0.705);
+  font-size: 18px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.input-tags:hover {
+  color: rgb(255, 0, 0);
+}

@@ -1,0 +1,14 @@
+.movie-list {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.loading-list-movie {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+}
