@@ -1,5 +1,7 @@
 const { gql } = require('apollo-server')
 const axios = require('axios')
+const Redis = require("ioredis")
+const redis = new Redis()
 
 const typeDefMovies = gql`
   type MovieModel {
@@ -29,11 +31,19 @@ const resolverMovie = {
   Query: {
     movies: async () => {
       try {
-        const { data } = await axios({
-          url: 'http://localhost:3001/movies',
-          method: 'GET'
-        })
-        return data
+        const moviesRedis = await redis.get('movies')
+        if (moviesRedis) {
+          console.log('movies dari redis')
+          return JSON.parse(moviesRedis)
+        } else {
+          console.log('movies dari database')
+          const { data } = await axios({
+            url: 'http://localhost:3001/movies',
+            method: 'GET'
+          })
+          await redis.set('movies', JSON.stringify(data))
+          return data
+        }
       } catch (err) {
         console.log(err)
       }
@@ -59,6 +69,7 @@ const resolverMovie = {
           method: 'POST',
           data: args
         })
+        await redis.set('movies', null)
         return data
       } catch (err) {
         console.log(err)
@@ -77,6 +88,7 @@ const resolverMovie = {
             tags: args.tags
           }
         })
+        await redis.set('movies', null)
         return data
       } catch (err) {
         console.log(err)
@@ -88,6 +100,7 @@ const resolverMovie = {
           url: 'http://localhost:3001/movies/' + args.id,
           method: 'DELETE'
         })
+        await redis.set('movies', null)
         return data
       } catch (err) {
         console.log(err)

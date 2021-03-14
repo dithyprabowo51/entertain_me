@@ -1,5 +1,7 @@
 const { gql } = require('apollo-server')
 const axios = require('axios')
+const Redis = require("ioredis")
+const redis = new Redis()
 
 const typeDefTv = gql`
   type TvSeriesModel {
@@ -29,11 +31,19 @@ const resolverTvSeries = {
   Query: {
     tvSeries: async () => {
       try {
-        const { data } = await axios({
-          url: 'http://localhost:3002/tv',
-          method: 'GET'
-        })
-        return data
+        const tvSeriesRedis = await redis.get('tvSeries')
+        if (tvSeriesRedis) {
+          console.log('Tv Series dari redis')
+          return JSON.parse(tvSeriesRedis)
+        } else {
+          console.log('Tv Series dari database')
+          const { data } = await axios({
+            url: 'http://localhost:3002/tv',
+            method: 'GET'
+          })
+          await redis.set('tvSeries', JSON.stringify(data))
+          return data
+        }
       } catch (err) {
         console.log(err)
       }
@@ -59,6 +69,7 @@ const resolverTvSeries = {
           method: 'POST',
           data: args
         })
+        await redis.set('tvSeries', null)
         return data
       } catch (err) {
         console.log(err)
@@ -77,6 +88,7 @@ const resolverTvSeries = {
             tags: args.tags
           }
         })
+        await redis.set('tvSeries', null)
         return data
       } catch (err) {
         console.log(err)
@@ -88,6 +100,7 @@ const resolverTvSeries = {
           url: 'http://localhost:3002/tv/' + args.id,
           method: 'DELETE'
         })
+        await redis.set('tvSeries', null)
         return data
       } catch (err) {
         console.log(err)
