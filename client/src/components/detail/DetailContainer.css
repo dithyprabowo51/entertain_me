@@ -1,0 +1,15 @@
+.detail-container {
+  display: flex;
+  width: 600px;
+  height: 500px;
+  margin: auto;
+  font-size: 14px;
+}
+
+.key {
+  width: 90px;
+}
+
+.value {
+  width: 180px;
+}

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Movie.css'
 
 // components
 import Card from '../../components/card/Card.js'
 import AddMovie from '../../components/modal/addMovie/AddMovie.js'
+import EditForm from '../../components/modal/editMovie/EditMovie.js'
 
 // Graph
 import { useQuery, gql } from '@apollo/client'
@@ -15,6 +16,7 @@ const getMovies = gql`
       title
       overview
       poster_path
+      popularity
       tags
     }
   }
@@ -22,12 +24,25 @@ const getMovies = gql`
 
 const Movie = () => {
   const { data, loading } = useQuery(getMovies)
-  console.log(data)
+  const [showFormAdd, setShowFormAdd] = useState(false)
+  const [showFormEdit, setShowFormEdit] = useState(false)
+  const [movie, setMovie] = useState({})
+
+  const handleSetMovie = value => {
+    setMovie(value)
+  }
+
+  const handleFormAdd = value => {
+    setShowFormAdd(value)
+  }
+  const handleFormEdit = value => {
+    setShowFormEdit(value)
+  }
   return (
     <div className="movie">
       <h2 className="text-center text-warning mt-5 mb-4">List Movies</h2>
       <div className="text-center">
-        <button className="btn btn-secondary">Add Movie</button>
+        <button onClick={handleFormAdd} className="btn btn-secondary">Add Movie</button>
       </div>
       {
         loading ?
@@ -40,12 +55,23 @@ const Movie = () => {
           <div className="movie-list mt-4">
             {
               data.movies.map(movie => {
-                return <Card key={movie._id} movie={movie} />
+                return <Card handleSetMovie={value => handleSetMovie(value)} handleFormEdit={value => handleFormEdit(value)} key={movie._id} movie={movie} />
               })
             }
           </div>
       }
-      <AddMovie />
+      {
+        showFormAdd ?
+          <AddMovie handleFormAdd={(value) => handleFormAdd(value)} />
+          :
+          null
+      }
+      {
+        showFormEdit ?
+          <EditForm movie={movie} handleFormEdit={value => handleFormEdit(value)} />
+          :
+          null
+      }
     </div>
   )
 }
