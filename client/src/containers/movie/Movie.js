@@ -7,7 +7,7 @@ import AddMovie from '../../components/modal/addMovie/AddMovie.js'
 import EditForm from '../../components/modal/editMovie/EditMovie.js'
 
 // Graph
-import { useQuery, gql } from '@apollo/client'
+import { useQuery, useMutation, gql } from '@apollo/client'
 
 const getMovies = gql`
   query getMovies {
@@ -22,8 +22,15 @@ const getMovies = gql`
   }
 `
 
+const DELETE_MOVIE = gql`
+  mutation deleteMovie($id: ID!) {
+    deleteMovie(id: $id)
+  }
+`
+
 const Movie = () => {
   const { data, loading } = useQuery(getMovies)
+  const [deleteMovie] = useMutation(DELETE_MOVIE)
   const [showFormAdd, setShowFormAdd] = useState(false)
   const [showFormEdit, setShowFormEdit] = useState(false)
   const [movie, setMovie] = useState({})
@@ -37,6 +44,12 @@ const Movie = () => {
   }
   const handleFormEdit = value => {
     setShowFormEdit(value)
+  }
+  const handleDeleteMovie = id => {
+    deleteMovie({
+      variables: { id },
+      refetchQueries: [{ query: getMovies }]
+    })
   }
   return (
     <div className="movie">
@@ -55,7 +68,7 @@ const Movie = () => {
           <div className="movie-list mt-4">
             {
               data.movies.map(movie => {
-                return <Card handleSetMovie={value => handleSetMovie(value)} handleFormEdit={value => handleFormEdit(value)} key={movie._id} movie={movie} />
+                return <Card handleDeleteMovie={id => handleDeleteMovie(id)} handleSetMovie={value => handleSetMovie(value)} handleFormEdit={value => handleFormEdit(value)} key={movie._id} movie={movie} />
               })
             }
           </div>
