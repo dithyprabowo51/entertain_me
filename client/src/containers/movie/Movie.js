@@ -68,7 +68,7 @@ const Movie = () => {
           <div className="movie-list mt-4">
             {
               data.movies.map(movie => {
-                return <Card handleDeleteMovie={id => handleDeleteMovie(id)} handleSetMovie={value => handleSetMovie(value)} handleFormEdit={value => handleFormEdit(value)} key={movie._id} movie={movie} />
+                return <Card type="movie" handleDeleteMovie={id => handleDeleteMovie(id)} handleSetMovie={value => handleSetMovie(value)} handleFormEdit={value => handleFormEdit(value)} key={movie._id} movie={movie} />
               })
             }
           </div>

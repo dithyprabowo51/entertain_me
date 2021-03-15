@@ -13,7 +13,7 @@ const Nav = () => {
     <div className="nav-component">
       <div onClick={() => changePage('/')}>Home</div>
       <div onClick={() => changePage('/movies')}>Movies</div>
-      <div>TV Series</div>
+      <div onClick={() => changePage('/favorites')}>Favorites</div>
     </div>
   )
 }

@@ -43,6 +43,13 @@ const Form = props => {
       setPopularity(props.movie.popularity)
       setTags(props.movie.tags)
     }
+    return () => {
+      setTitle('')
+      setOverview('')
+      setPoster_path('')
+      setPopularity('')
+      setTags([])
+    }
     // eslint-disable-next-line
   }, [])
 
