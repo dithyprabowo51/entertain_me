@@ -38,7 +38,7 @@ const resolverTvSeries = {
         } else {
           console.log('Tv Series dari database')
           const { data } = await axios({
-            url: 'http://localhost:3002/tv',
+            url: 'http://localhost:4002/tv',
             method: 'GET'
           })
           await redis.set('tvSeries', JSON.stringify(data))
@@ -51,7 +51,7 @@ const resolverTvSeries = {
     tv: async (parent, args) => {
       try {
         const { data } = await axios({
-          url: 'http://localhost:3002/tv/' + args.id,
+          url: 'http://localhost:4002/tv/' + args.id,
           method: 'GET'
         })
         return data
@@ -65,7 +65,7 @@ const resolverTvSeries = {
     addTvSeries: async (parent, args) => {
       try {
         const { data } = await axios({
-          url: 'http://localhost:3002/tv',
+          url: 'http://localhost:4002/tv',
           method: 'POST',
           data: args
         })
@@ -78,7 +78,7 @@ const resolverTvSeries = {
     updateTvSeries: async (parent, args) => {
       try {
         const { data } = await axios({
-          url: 'http://localhost:3002/tv/' + args.id,
+          url: 'http://localhost:4002/tv/' + args.id,
           method: 'PUT',
           data: {
             title: args.title,
@@ -97,7 +97,7 @@ const resolverTvSeries = {
     deleteTvSeries: async (parent, args) => {
       try {
         const { data } = await axios({
-          url: 'http://localhost:3002/tv/' + args.id,
+          url: 'http://localhost:4002/tv/' + args.id,
           method: 'DELETE'
         })
         await redis.set('tvSeries', null)

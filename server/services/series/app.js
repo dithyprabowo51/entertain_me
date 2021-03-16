@@ -3,7 +3,7 @@ const app = express()
 const { connect } = require('./config/mongodb.js')
 const routes = require('./routes')
 const errorHandling = require('./helpers/errorHandling.js')
-const PORT = process.env.PORT || 3002
+const PORT = process.env.PORT || 4002
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

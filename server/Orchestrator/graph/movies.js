@@ -38,7 +38,7 @@ const resolverMovie = {
         } else {
           console.log('movies dari database')
           const { data } = await axios({
-            url: 'http://localhost:3001/movies',
+            url: 'http://localhost:4001/movies',
             method: 'GET'
           })
           await redis.set('movies', JSON.stringify(data))
@@ -51,7 +51,7 @@ const resolverMovie = {
     movie: async (parent, args) => {
       try {
         const { data } = await axios({
-          url: 'http://localhost:3001/movies/' + args.id,
+          url: 'http://localhost:4001/movies/' + args.id,
           method: 'GET'
         })
         return data
@@ -65,7 +65,7 @@ const resolverMovie = {
     addMovie: async (parent, args) => {
       try {
         const { data } = await axios({
-          url: 'http://localhost:3001/movies',
+          url: 'http://localhost:4001/movies',
           method: 'POST',
           data: args
         })
@@ -78,7 +78,7 @@ const resolverMovie = {
     updateMovie: async (parent, args) => {
       try {
         const { data } = await axios({
-          url: 'http://localhost:3001/movies/' + args.id,
+          url: 'http://localhost:4001/movies/' + args.id,
           method: 'PUT',
           data: {
             title: args.title,
@@ -97,7 +97,7 @@ const resolverMovie = {
     deleteMovie: async (parent, args) => {
       try {
         const { data } = await axios({
-          url: 'http://localhost:3001/movies/' + args.id,
+          url: 'http://localhost:4001/movies/' + args.id,
           method: 'DELETE'
         })
         await redis.set('movies', null)
