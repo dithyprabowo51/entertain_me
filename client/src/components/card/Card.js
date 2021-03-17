@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 // Var
 import { favoritesVar } from '../../config/Var.js'
 
 const Card = props => {
+  const [errMessage, setErrMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const history = useHistory()
 
   const toDetail = id => {
@@ -22,7 +24,21 @@ const Card = props => {
 
   const handleAddToFavorite = () => {
     const existingFavorites = [...favoritesVar()]
-    favoritesVar([...existingFavorites, props.movie])
+    const findMovie = existingFavorites.find(movie => {
+      return movie._id === props.movie._id
+    })
+    if (!findMovie) {
+      favoritesVar([...existingFavorites, props.movie])
+      setSuccessMessage('Add to favorite success')
+      setTimeout(() => {
+        setSuccessMessage('')
+      }, 1000)
+    } else {
+      setErrMessage('Movie has been added to favorite!')
+      setTimeout(() => {
+        setErrMessage('')
+      }, 1000)
+    }
   }
 
   return (
@@ -30,6 +46,18 @@ const Card = props => {
       <img onClick={() => toDetail(props.movie._id)} src={props.movie.poster_path} className="card-img-top" height="300px" alt="movie_poster" />
       <div className="card-body">
         <p className="card-text text-center">{props.movie.title}</p>
+        {
+          errMessage ?
+            <p className="text-center text-danger" style={{ fontSize: '14px' }}>{errMessage}</p>
+            :
+            null
+        }
+        {
+          successMessage ?
+            <p className="text-center text-success" style={{ fontSize: '14px' }}>{successMessage}</p>
+            :
+            null
+        }
         {
           props.type !== 'favorite' ?
             <div className="text-center">

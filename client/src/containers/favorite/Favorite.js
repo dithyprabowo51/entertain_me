@@ -10,7 +10,6 @@ import Card from '../../components/card/Card.js'
 
 const Favorite = () => {
   const favorites = useReactiveVar(favoritesVar)
-  console.log(favorites)
   return (
     <div className="favorites">
       <h2 className="text-center mt-5 mb-4 text-warning">Favorites Movie</h2>
